@@ -11,9 +11,9 @@ public class GPSData {
 	public GPSData(int n) {
 
 		// TODO - START
+		antall = 0;
+		gpspoints = new GPSPoint[n];
 		
-		throw new UnsupportedOperationException(TODO.construtor("GPSData"));
-
 		// TODO - SLUTT
 	}
 
@@ -27,8 +27,12 @@ public class GPSData {
 
 		// TODO - START
 		
-		throw new UnsupportedOperationException(TODO.method());
-
+		if (antall < gpspoints.length) {
+			gpspoints[antall] = gpspoint;
+			inserted = true;
+			antall++;
+		}
+		return inserted;
 		// TODO - SLUTT
 	}
 
@@ -38,8 +42,8 @@ public class GPSData {
 
 		// TODO - START
 		
-		throw new UnsupportedOperationException(TODO.method());
-
+		return insertGPS(GPSDataConverter.convert (time, latitude, longitude, elevation));
+		
 		// TODO - SLUTT
 		
 	}
@@ -50,11 +54,13 @@ public class GPSData {
 
 		// TODO - START
 
-		throw new UnsupportedOperationException(TODO.method());
+		for (GPSPoint p : gpspoints ) {
+			System.out.print(p.toString());
+		}
 
 		// TODO - SLUTT
 		
-		// System.out.println("====== Konvertert GPS Data - SLUTT ======");
+		System.out.println("====== Konvertert GPS Data - SLUTT ======");
 
 	}
 }
