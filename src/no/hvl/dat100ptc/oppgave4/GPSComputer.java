@@ -148,7 +148,7 @@ public class GPSComputer {
 		}	else  
 			met = 16.0;
 		
-		kcal = met * weight * (secs /3600);
+		kcal = met * weight * secs / 3600;
 		// TODO - SLUTT
 		return kcal;
 	}
@@ -161,7 +161,7 @@ public class GPSComputer {
 		
 			
 		totalkcal = kcal(weight, totalTime(), averageSpeed());
-		
+	
 		
 		return totalkcal;
 		
@@ -183,7 +183,7 @@ public class GPSComputer {
 		System.out.println(String.format("%-16s", "Total elevation") + ":  " + String.format("%.2f",totalElevation()) + " m");
 		System.out.println(String.format("%-16s", "Max speed") + ":  " + String.format("%.2f",maxSpeed()) + " km/t");
 		System.out.println(String.format("%-16s", "Average speed") + ":  " + String.format("%.2f",averageSpeed()) + " km/t");
-		System.out.println(String.format("%-16s", "Energy") + ":  " + totalKcal(WEIGHT) + " kcal");
+		System.out.println(String.format("%-16s", "Energy") + ":  " + String.format("%.2f", totalKcal(WEIGHT)) + " kcal");
 
 		// TODO - SLUTT
 
