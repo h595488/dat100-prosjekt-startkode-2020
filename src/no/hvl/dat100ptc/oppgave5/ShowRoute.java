@@ -16,7 +16,7 @@ public class ShowRoute extends EasyGraphics {
 
 	private GPSPoint[] gpspoints;
 	private GPSComputer gpscomputer;
-	
+
 	public ShowRoute() {
 
 		String filename = JOptionPane.showInputDialog("GPS data filnavn: ");
@@ -35,7 +35,7 @@ public class ShowRoute extends EasyGraphics {
 		makeWindow("Route", MAPXSIZE + 2 * MARGIN, MAPYSIZE + 2 * MARGIN);
 
 		showRouteMap(MARGIN + MAPYSIZE);
-		
+
 		showStatistics();
 	}
 
@@ -45,30 +45,59 @@ public class ShowRoute extends EasyGraphics {
 		double maxlon = GPSUtils.findMax(GPSUtils.getLongitudes(gpspoints));
 		double minlon = GPSUtils.findMin(GPSUtils.getLongitudes(gpspoints));
 
-		double xstep = MAPXSIZE / (Math.abs(maxlon - minlon)); 
+		double xstep = MAPXSIZE / (Math.abs(maxlon - minlon));
 
 		return xstep;
 	}
 
 	// antall y-pixels per breddegrad
 	public double ystep() {
-	
-		double ystep;
-		
+
+		double maxlat = GPSUtils.findMax(GPSUtils.getLatitudes(gpspoints));
+		double minlat = GPSUtils.findMin(GPSUtils.getLatitudes(gpspoints));
+
+		double ystep = MAPYSIZE / (Math.abs(maxlat - minlat));
+
+		return ystep;
 		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
+
+		// throw new UnsupportedOperationException(TODO.method());
 
 		// TODO - SLUTT
-		
+
 	}
 
 	public void showRouteMap(int ybase) {
 
 		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
+
+		double xstep = xstep();
+		double ystep = ystep();
+		double minlat = GPSUtils.findMin(GPSUtils.getLatitudes(gpspoints));
+		double minlong = GPSUtils.findMin(GPSUtils.getLongitudes(gpspoints));
+
+		int x, y, prevx, prevy;
+		prevx = prevy = 0;
+		setColor(0, 255, 0);
+		for (int i = 0; i < gpspoints.length; i++) {
+			x = MARGIN + (int) ((gpspoints[i].getLongitude() - minlong) * xstep);
+			y = ybase - (int) ((gpspoints[i].getLatitude() - minlat) * ystep);
+
+			if (i != 0)
+				drawLine(prevx, prevy, x, y);
+
+			if (i == gpspoints.length - 1) {
+				setColor(0, 0, 255);
+				fillCircle(x, y, 5);
+			} else {
+				fillCircle(x, y, 3);
+			}
+
+			prevx = x;
+			prevy = y;
+		}
+		// throw new UnsupportedOperationException(TODO.method());
+
 		// TODO - SLUTT
 	}
 
@@ -76,13 +105,37 @@ public class ShowRoute extends EasyGraphics {
 
 		int TEXTDISTANCE = 20;
 
-		setColor(0,0,0);
-		setFont("Courier",12);
-		
+		setColor(0, 0, 0);
+		setFont("Courier", 12);
+
 		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
+		String drawstring = "";
+		String totaltime = GPSUtils.formatTime(gpscomputer.totalTime());
+		drawstring = String.format("%-16s", "Total Time") + ": " + totaltime;
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE);
+
+		String totdist = GPSUtils.formatDouble(gpscomputer.totalDistance() / 1000);
+		drawstring = String.format("%-16s", "Total Distance") + ": " + totdist + " km";
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE * 2);
+
+		String totelev = GPSUtils.formatDouble(gpscomputer.totalElevation());
+		drawstring = String.format("%-16s", "Total Elevation") + ": " + totelev + " m";
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE * 3);
+
+		String fast = GPSUtils.formatDouble(gpscomputer.maxSpeed());
+		drawstring = String.format("%-16s", "Max Speed") + ": " + fast + " km/t";
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE * 4);
+
+		String gjenm = GPSUtils.formatDouble(gpscomputer.averageSpeed());
+		drawstring = String.format("%-16s", "Average Speed") + ": " + gjenm + " km/t";
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE * 5);
+
+		double weight = 44.77; //vet ikke hvor man finner weight som man trenger for å bruke totalkcal opprettet derfor double weight for at vi skulle få et resultat...
+		String totkcal = GPSUtils.formatDouble(gpscomputer.totalKcal(weight));
+		drawstring = String.format("%-16s", "Energy") + ": " + totkcal + " kcal";
+		drawString(drawstring, TEXTDISTANCE, TEXTDISTANCE * 6);
+		// throw new UnsupportedOperationException(TODO.method());
+
 		// TODO - SLUTT;
 	}
 
